@@ -15,6 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //async wait for api call
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.global().async {
+            apiCall()
+            group.leave()
+        }
+        group.wait()
+        sleep(2)
         return true
     }
 
