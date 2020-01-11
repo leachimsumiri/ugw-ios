@@ -16,14 +16,24 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: MKMapView, context: Context) {
-        let coordinate = globalLoc!//CLLocationCoordinate2D(latitude: 34.011286, longitude: -116.166868)
-        let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
+        let coordinate = globalLoc!
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: coordinate, span: span)
         view.setRegion(region, animated: true)
+        let newPin=MKPointAnnotation()
+        newPin.coordinate = coordinate
+        view.addAnnotation(newPin)
+        
+        for object in objects{
+            let currCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(Double(object.lat)/1000000), longitude: CLLocationDegrees(Double(object.lon)/1000000))
+            let pin=MKPointAnnotation()
+            pin.coordinate = currCoordinate
+            view.addAnnotation(pin)
+        }
     }
 }
 
-struct MapView_Preview: PreviewProvider {
+struct MapView_Preview: PreviewProvider {    
     static var previews: some View {
         MapView()
     }
